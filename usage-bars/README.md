@@ -21,8 +21,9 @@ Then restart OpenCode. Update later with `opencode plugin update opencode-sideba
 
 ## Configuration
 
-Optional. Create `usage-bars.json` in your OpenCode config folder
-(`~/.config/opencode/`, or `%USERPROFILE%\.config\opencode\` on Windows; `$XDG_CONFIG_HOME/opencode/` if set):
+On first run the plugin creates `usage-bars.json` in your OpenCode config folder
+(`~/.config/opencode/`, or `%USERPROFILE%\.config\opencode\` on Windows; `$XDG_CONFIG_HOME/opencode/` if set)
+with these defaults. It never overwrites an existing file. Edit it to change the settings:
 
 ```json
 {

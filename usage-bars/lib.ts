@@ -1,6 +1,6 @@
-import { readFileSync, statSync } from "node:fs"
+import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import { homedir, tmpdir } from "node:os"
-import { join } from "node:path"
+import { dirname, join } from "node:path"
 
 export type Win = { used: number | null; resetsAtMs: number | null }
 export type Windows = { five: Win; week: Win; updatedAtMs: number | null }
@@ -168,6 +168,21 @@ export function readSettings(path = CONFIG_FILE): Settings {
 }
 
 export const enabledProviders = (path = CONFIG_FILE) => readSettings(path).providers
+
+// Creates the settings file with the defaults so it is easy to find and edit. Never overwrites an existing file.
+export function ensureConfigFile(path = CONFIG_FILE): boolean {
+  const defaults = {
+    providers: { claude: true, codex: true, copilot: true },
+    claudeAutoRefresh: true,
+  }
+  try {
+    mkdirSync(dirname(path), { recursive: true })
+    writeFileSync(path, `${JSON.stringify(defaults, null, 2)}\n`, { flag: "wx" })
+    return true
+  } catch {
+    return false
+  }
+}
 
 export function summary(view: View): string {
   const part = (p: Provider) => {

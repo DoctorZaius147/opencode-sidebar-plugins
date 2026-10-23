@@ -14,6 +14,7 @@ import {
   enabledProviders,
   parseCopilotUser,
   parseWham,
+  readSettings,
 } from "./lib.ts"
 import { refreshSource, writeAtomic } from "./refresh.ts"
 import type { Outcome } from "./refresh.ts"
@@ -52,7 +53,7 @@ function failed(response: Response): Outcome {
 
 // Asks Claude Code to refresh its own token. Null means a real login is needed or the refresh did not complete.
 async function renewClaude(creds: ClaudeCreds): Promise<ClaudeCreds | null> {
-  if (!canRefresh(creds)) return null
+  if (!readSettings().claudeAutoRefresh || !canRefresh(creds)) return null
   return refreshViaClaude({ stale: creds.accessToken })
 }
 

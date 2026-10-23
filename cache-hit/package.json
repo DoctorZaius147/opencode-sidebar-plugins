@@ -1,10 +1,35 @@
 {
-  "name": "cache-hit",
-  "private": true,
+  "name": "opencode-sidebar-cache",
+  "version": "0.1.0",
+  "description": "OpenCode sidebar Context section with token usage, cost and prompt-cache hit rate.",
   "type": "module",
+  "license": "MIT",
+  "author": "DoctorZaius147",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoctorZaius147/opencode-sidebar-plugins.git",
+    "directory": "cache-hit"
+  },
+  "homepage": "https://github.com/DoctorZaius147/opencode-sidebar-plugins/tree/main/cache-hit#readme",
+  "bugs": {
+    "url": "https://github.com/DoctorZaius147/opencode-sidebar-plugins/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "sidebar",
+    "context",
+    "tokens",
+    "cache"
+  ],
   "exports": {
     "./tui": "./tui.ts"
   },
+  "files": [
+    "*.ts",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "@opentui/core": "^0.5.10",
     "@opentui/solid": "^0.5.10",

@@ -1,6 +1,6 @@
-# cache-hit
+# opencode-sidebar-cache
 
-OpenCode sidebar section that replaces the built-in "Context" block. It shows, for the current session:
+OpenCode sidebar section that replaces the built-in "Context" block. For the current session it shows:
 
 - context tokens in use and the percentage of the model's context limit
 - cost spent so far
@@ -9,15 +9,24 @@ OpenCode sidebar section that replaces the built-in "Context" block. It shows, f
 
 ## Install
 
-1. Copy this folder to `~/.config/opencode/plugins/cache-hit`
-   (Windows: `C:\Users\<you>\.config\opencode\plugins\cache-hit`).
-2. In that folder run `npm install`.
-3. Disable the built-in Context section so it isn't shown twice. In `~/.config/opencode/cli.json`:
+```sh
+opencode plugin add opencode-sidebar-cache
+```
 
-   ```json
-   { "plugins": ["-opencode.sidebar.context"] }
-   ```
+Then restart OpenCode. Update later with `opencode plugin update opencode-sidebar-cache`.
 
-4. Restart OpenCode.
+## The built-in Context section
+
+So the context info isn't shown twice, the plugin adds `"-opencode.sidebar.context"` to the `plugins` list in your
+`cli.json` (`~/.config/opencode/cli.json`) the first time it runs. Other settings in that file are kept.
+
+- If `cli.json` can't be read as plain JSON (for example it contains comments), it is left untouched and a
+  warning toast tells you to add the line yourself.
+- To keep the built-in section, either list `"opencode.sidebar.context"` after that entry, or pass the plugin
+  option `replaceBuiltin: false`:
+
+  ```json
+  { "plugins": [{ "package": "opencode-sidebar-cache", "options": { "replaceBuiltin": false } }] }
+  ```
 
 Requires OpenCode 2.x.

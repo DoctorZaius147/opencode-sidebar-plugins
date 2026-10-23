@@ -1,7 +1,6 @@
 import { readFileSync, statSync } from "node:fs"
 import { homedir, tmpdir } from "node:os"
 import { join } from "node:path"
-import { fileURLToPath } from "node:url"
 
 export type Win = { used: number | null; resetsAtMs: number | null }
 export type Windows = { five: Win; week: Win; updatedAtMs: number | null }
@@ -12,7 +11,9 @@ export const CLAUDE_STATUS = join(tmpdir(), "claude", "usage-bars-cc-status.json
 export const CODEX_STATUS = join(homedir(), ".cache", "opencode", "usage-bars-cx-status.json")
 export const COPILOT_FILE = join(homedir(), ".cache", "opencode", "usage-bars-gh.json")
 export const COPILOT_STATUS = join(homedir(), ".cache", "opencode", "usage-bars-gh-status.json")
-export const CONFIG_FILE = fileURLToPath(new URL("./usage-bars.config.json", import.meta.url))
+// Kept in the user's OpenCode config folder so package updates never overwrite it.
+export const configDir = () => join(process.env.XDG_CONFIG_HOME || join(homedir(), ".config"), "opencode")
+export const CONFIG_FILE = join(configDir(), "usage-bars.json")
 export const STALE_MS = 30 * 60_000
 
 export type ErrorKind = "rate_limited" | "auth" | "token" | "unreachable" | "bad_response"
@@ -154,12 +155,19 @@ export type View = Record<ProviderId, Provider | null>
 
 const CONFIG_KEYS: Record<ProviderId, string> = { cc: "claude", cx: "codex", gh: "copilot" }
 
-// Only an explicit `false` disables a provider; a missing or unreadable file keeps everything on.
-export function enabledProviders(path = CONFIG_FILE): Record<ProviderId, boolean> {
-  const flags = readJson(path)?.providers
-  const on = (id: ProviderId) => flags?.[CONFIG_KEYS[id]] !== false
-  return { cc: on("cc"), cx: on("cx"), gh: on("gh") }
+export type Settings = { providers: Record<ProviderId, boolean>; claudeAutoRefresh: boolean }
+
+// Only an explicit `false` turns something off; a missing or unreadable file keeps everything on.
+export function readSettings(path = CONFIG_FILE): Settings {
+  const raw = readJson(path)
+  const on = (id: ProviderId) => raw?.providers?.[CONFIG_KEYS[id]] !== false
+  return {
+    providers: { cc: on("cc"), cx: on("cx"), gh: on("gh") },
+    claudeAutoRefresh: raw?.claudeAutoRefresh !== false,
+  }
 }
+
+export const enabledProviders = (path = CONFIG_FILE) => readSettings(path).providers
 
 export function summary(view: View): string {
   const part = (p: Provider) => {

@@ -1,7 +1,0 @@
-{
-  "providers": {
-    "claude": true,
-    "codex": true,
-    "copilot": true
-  }
-}

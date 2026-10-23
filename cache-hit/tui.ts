@@ -1,5 +1,6 @@
 import { Plugin } from "@opencode/plugin/tui"
 import { createElement, effect, insertNode, insert, setProp } from "@opentui/solid"
+import { BUILTIN_ID, ensureBuiltinDisabled } from "./disable-builtin.ts"
 
 const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? Math.max(0, v) : 0)
 const int = (n: number) =>
@@ -124,6 +125,14 @@ function ContextSection(props: { context: any; sessionID: string }) {
 export default Plugin.define({
   id: "cache-hit",
   setup(context: any) {
+    if (context.options?.replaceBuiltin !== false && ensureBuiltinDisabled() === "failed") {
+      context.ui.toast.show({
+        title: "cache-hit",
+        message: `Could not edit cli.json. Add "-${BUILTIN_ID}" to its "plugins" to hide the built-in Context section.`,
+        variant: "warning",
+        duration: 8000,
+      })
+    }
     return context.ui.slot({
       prepend: "sidebar.content",
       render: ({ sessionID }: { sessionID: string }) => ContextSection({ context, sessionID }),

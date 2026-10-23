@@ -1,6 +1,6 @@
 {
   "name": "opencode-sidebar-usage",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "OpenCode sidebar usage bars for Claude, Codex and GitHub Copilot, with reset times.",
   "type": "module",
   "license": "MIT",

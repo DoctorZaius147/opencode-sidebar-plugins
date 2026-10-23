@@ -21,9 +21,11 @@ Then restart OpenCode. Update later with `opencode plugin update opencode-sideba
 
 ## Configuration
 
-On first run the plugin creates `usage-bars.json` in your OpenCode config folder
-(`~/.config/opencode/`, or `%USERPROFILE%\.config\opencode\` on Windows; `$XDG_CONFIG_HOME/opencode/` if set)
-with these defaults. It never overwrites an existing file. Edit it to change the settings:
+The first time OpenCode's terminal UI starts with the plugin installed, a short wizard asks whether to show Claude,
+Codex and GitHub Copilot (three Yes/No questions; Esc skips and keeps the rest on). Your answers are saved to
+`usage-bars.json` in your OpenCode config folder (`~/.config/opencode/`, or `%USERPROFILE%\.config\opencode\` on
+Windows; `$XDG_CONFIG_HOME/opencode/` if set). The wizard never runs again, and an existing file is never overwritten.
+To run it again, delete that file. You can also edit it by hand:
 
 ```json
 {

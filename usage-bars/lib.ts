@@ -169,15 +169,11 @@ export function readSettings(path = CONFIG_FILE): Settings {
 
 export const enabledProviders = (path = CONFIG_FILE) => readSettings(path).providers
 
-// Creates the settings file with the defaults so it is easy to find and edit. Never overwrites an existing file.
-export function ensureConfigFile(path = CONFIG_FILE): boolean {
-  const defaults = {
-    providers: { claude: true, codex: true, copilot: true },
-    claudeAutoRefresh: true,
-  }
+// Creates the settings file (claudeAutoRefresh on by default). Never overwrites an existing file.
+export function writeConfigFile(providers: { claude: boolean; codex: boolean; copilot: boolean }, path = CONFIG_FILE): boolean {
   try {
     mkdirSync(dirname(path), { recursive: true })
-    writeFileSync(path, `${JSON.stringify(defaults, null, 2)}\n`, { flag: "wx" })
+    writeFileSync(path, `${JSON.stringify({ providers, claudeAutoRefresh: true }, null, 2)}\n`, { flag: "wx" })
     return true
   } catch {
     return false

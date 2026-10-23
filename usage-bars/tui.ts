@@ -3,6 +3,7 @@ import { createElement, effect, insertNode, insert, setProp } from "@opentui/sol
 import { createSignal, onCleanup } from "solid-js"
 import { BAR_WIDTH, bar, summary, usageView } from "./lib.ts"
 import type { Provider, Seg } from "./lib.ts"
+import { firstRun } from "./wizard.ts"
 
 const REFRESH_MS = 30_000
 const EMPTY: Seg = { label: "", pct: null, reset: "" }
@@ -118,6 +119,7 @@ function UsageBars(props: { context: any }) {
 export default Plugin.define({
   id: "usage-bars",
   setup(context: any) {
+    void firstRun(context).catch(() => {})
     return context.ui.slot({
       append: "sidebar.content",
       render: () => UsageBars({ context }),

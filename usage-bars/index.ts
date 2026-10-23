@@ -12,7 +12,6 @@ import {
   COPILOT_FILE,
   COPILOT_STATUS,
   enabledProviders,
-  ensureConfigFile,
   parseCopilotUser,
   parseWham,
   readSettings,
@@ -224,7 +223,6 @@ export default Plugin.define({
         })
     }
 
-    ensureConfigFile()
     tick()
     const timer = setInterval(tick, REFRESH_MS)
     return () => clearInterval(timer)
